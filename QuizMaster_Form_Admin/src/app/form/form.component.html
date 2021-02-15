@@ -1,0 +1,157 @@
+<div class="container">
+
+    <h1 style="text-align: center;">Quiz Form</h1>
+    <br>
+    <br>
+    <div >
+        <form [formGroup]="form">
+            <table>
+                <tr>
+                    <td>
+                        <span>Quiz Name:</span> 
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Quiz Name </mat-label>
+                            <mat-hint>Name must be as "quiz1"</mat-hint>
+                            <input matInput placeholder="quiz1" formControlName="name" required/>
+                        </mat-form-field> 
+                    </td>
+                    <td>
+                        <span>Quiz Time:</span>
+                    </td> 
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Quiz Time</mat-label>
+                            <input matInput type="number" formControlName="time" required/>
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span>Passmark:</span>
+                    </td> 
+                    <td>
+                        <mat-form-field appearance="outline">    
+                            <mat-label>Passmark</mat-label>
+                            <input matInput type="number" formControlName="passmark" required />
+                        </mat-form-field> 
+                    </td>
+                    <td>
+                        <span>Total Questions:</span>
+                    </td> 
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Total Questions</mat-label>
+                            <input matInput type="number" formControlName="totalQuestions"  required/>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table> 
+
+            <table >
+                <div formArrayName="questions" style="margin-bottom: 1%;">
+                    <div *ngFor="let q of questions().controls; let q_Index = index">
+                        <div [formGroupName]="q_Index">
+                            <tr>
+
+                                <h3 style="font-weight: bold;">QUESTION {{q_Index+1}}</h3>
+                            </tr>
+            
+                            <tr>
+                                <td>
+                                    <span>Question</span>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Question</mat-label>
+                                        <textarea matInput  placeholder="Enter Your Question Here" formControlName="question" required></textarea>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <span>Marks</span>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Marks</mat-label>
+                                        <input matInput type="number" placeholder="Enter Marks for Question" formControlName="marks" required/>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr></tr>
+            
+                            <tr>
+
+                                <h3 style="font-weight: bold;">ADD ANSWERS</h3>
+
+                            </tr>
+            
+                            <div formArrayName="answers">
+                                <div class="answer" *ngFor="let a of answers(q_Index).controls; let a_Index = index">
+                                    <div [formGroupName]="a_Index">
+                                        <tr>
+                                            <td>
+                                                <span>Answer:</span>
+                                            </td> 
+                                            <td>
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Answer</mat-label>
+                                                    <input matInput formControlName="answer" required />
+                                                </mat-form-field>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <button mat-raised-button color="warn" (click)="removeAnswer(q_Index, a_Index)" style="margin-left: 30%;">Remove Answer</button>
+                                            </td>
+                                        </tr>
+                    
+                                        <tr>
+                                            <td>
+                                                <span>Correct Answer:</span>
+                                            </td>
+                                            <td>
+                                                <mat-radio-group formControlName="correct">
+                                                    <span><mat-radio-button checked value="0">No</mat-radio-button></span>
+                                                    <span style="margin-left: 2%;"><mat-radio-button value="1">Yes</mat-radio-button></span>
+                                                </mat-radio-group>
+                                            </td>
+                                        </tr>
+        
+                                    </div>
+
+                                </div>
+                                <tr>
+                                    <td>
+                                        <button mat-raised-button color="primary" (click)="addAnswer(q_Index, a_Index)">Add Answer</button>
+                                    </td>
+                                    <td>
+                                        <button mat-raised-button color="warn" (click)="removeQuestion(q_Index)" style="margin-left: 30%;">Remove Question</button>
+                                    </td>
+                                </tr>
+                                <hr style="background-color: white; height: 2px;">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </table>
+
+            <div>
+                <button mat-raised-button color="primary" (click)="addQuestion()">Add Question</button>
+            </div>
+
+            <br>
+            <br>
+            <button mat-raised-button type="submit" color="primary" style="left: 50%;" (click)="submit()">Submit</button>
+
+        </form>
+
+        <!--<br>
+        <br>
+        <button mat-raised-button color="primary" (click)="SaveQuiz()">Creat Quiz</button>
+
+        <button mat-raised-button color="primary" (click)="GetAllQuiz()">Get Quiz List</button> -->
+    </div>
+</div>
+
