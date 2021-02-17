@@ -3,29 +3,32 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Quiz } from '../../models/quiz.model';
 import { File } from '@ionic-native/file/ngx';
+import{AngularFireDatabase, AngularFireList, AngularFireObject} from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
 
-  private readonly URL = 'assets/quizes';
+  private URL = 'assets/quizes';
+  private db_path = '/questions';
+  quiz_list: AngularFireList<Quiz>= null;
+  quiz_obj: Observable<any>;
 
-  constructor(
-    protected httpClient: HttpClient,
-    private file: File
-  ) {
-    // this.file.dataDirectory = 'assets';
+  constructor(protected httpClient: HttpClient, private file: File, private db: AngularFireDatabase) {  
+    this.quiz_list = this.db.list(this.db_path);
+    //this.quiz_obj = this.db.object(this.db_path);
   }
 
-  getQuiz(qid): Observable<Quiz> {
-    return this.httpClient.get<Quiz>(`${this.URL}/quiz${qid}.json`);
+  getQuiz(qid:any): Observable<Quiz> {
+    //return this.httpClient.get<Quiz>(`${this.URL}/quiz${qid}.json`);
+    this.quiz_obj = this.db.object<any>(this.db_path+'/'+'quiz'+qid).valueChanges();
+    return this.quiz_obj;
+
   }
 
-  saveQuizData(quiz: any){
-    // var a = this.file.writeFile(this.file.dataDirectory, 'userData.json', 'hello sajja', {replace: true});
+  /*saveQuizData(quiz: any){
 
-    // var b = this.file.readAsText(this.file.dataDirectory,'userData.json');
     var fileName = 'userData.json';
     return this.file.checkFile(this.file.dataDirectory,fileName).then(ret=>{
       console.log('File exists');
@@ -38,9 +41,9 @@ export class QuizService {
       });
     })
 
-    // var b = this.file.checkDir(this.file.dataDirectory, 'user').then(_ => console.log('Directory exists')).catch(err =>
-    //   console.log('Directory doesnt exist'));
-    // return true;
-  }
+    var b = this.file.checkDir(this.file.dataDirectory, 'user').then(_ => console.log('Directory exists')).catch(err =>
+    console.log('Directory doesnt exist'));
+    return true;
+  }*/
 
 }

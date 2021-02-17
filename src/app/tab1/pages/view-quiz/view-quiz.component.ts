@@ -61,13 +61,13 @@ export class ViewQuizComponent implements OnInit {
       });
   }*/
 
-  load() {
+  load(time:number) {
     const loading = this.loadingController.create({
       cssClass: 'loading',
       spinner: 'dots',
       message: this.loadingMsg,
       translucent: true,
-      duration: 300
+      duration: time
     });
     return loading;
   }
@@ -100,6 +100,11 @@ export class ViewQuizComponent implements OnInit {
 
   getMyQuiz(){
     console.log('--getMyQuiz--'+this.level);
+    this.loadingMsg = 'Loading';
+    this.load(null).then(load=>{
+      load.present();
+    });
+
     this.quizSrv.getQuiz(this.level).subscribe(ret=>{
       this.quiz = ret;
       console.log(this.quiz);
@@ -108,17 +113,24 @@ export class ViewQuizComponent implements OnInit {
       this.time = this.quiz.time;
       this.config = {leftTime: this.time, format: 'mm:ss'};
 
+      this.loadingController.dismiss().then(res=>{
+        this.loadingMsg = '';
+        console.log('Spinner Close')
+      })
     });
   }
 
   saveAnswer(question,answer){
     question.answer = answer.id;
+    console.log('question', question);
+    console.log('answer', answer);
+    console.log('question.answer', question.answer);
 
-    if(answer.correct === 1){
+    if(answer.correct == 1){
       this.totalMarks += question.marks;
       this.correct_answers++;
     }
-    this.load().then(load => {
+    this.load(300).then(load => {
       load.present();
       load.onWillDismiss().then(res => {
         console.log(res);
@@ -130,6 +142,9 @@ export class ViewQuizComponent implements OnInit {
           if(this.quiz.pass_mark <= this.totalMarks){
             this.userStatus = 'pass';
             //var nextlevel = this.level+1;
+            this.update(this.id, this.level.toString(), this.totalMarks, this.currentLevel);
+            console.log(' this.totalMarks', this.totalMarks); 
+          } else {
             this.update(this.id, this.level.toString(), this.totalMarks, this.currentLevel);
             console.log(' this.totalMarks', this.totalMarks); 
           }
