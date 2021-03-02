@@ -15,6 +15,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {AngularFireModule} from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     ReactiveFormsModule, 
     FormsModule,
+    FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebaseconfig),
     AngularFireDatabaseModule,
     BrowserAnimationsModule,
