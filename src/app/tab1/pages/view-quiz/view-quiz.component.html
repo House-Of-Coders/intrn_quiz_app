@@ -103,6 +103,27 @@
 
     </div>
   </div>
+
+  <div class="alert_div" *ngIf ="show_alert">
+    <ion-card class="alert">
+      <ion-card-header>
+        <ion-card-subtitle style="font-weight: 800; font-size: larger;">Connection Error</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content style="font-size: medium;">
+        Sorry, App can't reach to level. May be a Connection Problem.
+      </ion-card-content>
+
+      <ion-footer>
+        <ion-row>
+          <ion-col style="text-align: end; padding-right: 1.5em;">
+            <ion-button [routerLink]="['/tabs/tab1/userlevel']" fill="outline" size="small" color="#433489" style=" color: #433489;">OK</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-footer>
+    </ion-card>
+  </div>
+
 </ion-content>
 
 

@@ -6,6 +6,8 @@ import { Quiz } from '../../../models/quiz.model';
 import { ActivatedRoute } from '@angular/router';
 import { CountdownEvent, CountdownComponent} from 'ngx-countdown';
 import { LoadingController } from '@ionic/angular';
+import { isNull } from '@angular/compiler/src/output/output_ast';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-view-quiz',
@@ -29,6 +31,7 @@ export class ViewQuizComponent implements OnInit {
   config: any;
   time: number;
   loadingMsg: string;
+  show_alert: boolean = false;
 
 
   constructor( private quizSrv: QuizService, private userService: UserdataService, private route:ActivatedRoute, private loadingController: LoadingController) { 
@@ -44,6 +47,12 @@ export class ViewQuizComponent implements OnInit {
   ngOnInit() {
     this.id = this.userService.getDeviceId();
 
+  }
+
+  ngOnDestroy(){
+    this.loadingController.dismiss().then(res =>{
+      console.log(res);
+    });
   }
 
   /*loadingEvent(){
@@ -105,19 +114,66 @@ export class ViewQuizComponent implements OnInit {
       load.present();
     });
 
-    this.quizSrv.getQuiz(this.level).subscribe(ret=>{
-      this.quiz = ret;
-      console.log(this.quiz);
-      this.question = this.quiz.questions[0];
-      this.total_question = this.quiz.total_questions;
-      this.time = this.quiz.time;
-      this.config = {leftTime: this.time, format: 'mm:ss'};
-
-      this.loadingController.dismiss().then(res=>{
-        this.loadingMsg = '';
-        console.log('Spinner Close')
+    var quiz_obj;
+    this.quizSrv.quiz_filter(this.level).then((data)=>{
+      data.forEach(d=>{
+        quiz_obj = d.val();
       })
+      console.log('QUIZ RESPONSE', quiz_obj)
+
+      if (quiz_obj == null) {
+        this.loadingController.dismiss().then(res=>{
+          this.loadingMsg = '';
+          console.log('Spinner Close', res);
+        });
+        this.show_alert = true
+  
+      } else {
+        this.quiz = quiz_obj;
+        console.log(this.quiz);
+        this.question = this.quiz.questions[0];
+        this.total_question = this.quiz.total_questions;
+        this.time = this.quiz.time;
+        this.config = {leftTime: this.time, format: 'mm:ss'};
+  
+        this.loadingController.dismiss().then(res=>{
+          this.loadingMsg = '';
+          console.log('Spinner Close', res);
+        });
+      }
+
     });
+
+
+
+    /*this.quizSrv.getQuiz(this.level).subscribe (
+      ret=>{
+          console.log('QUIZ RESPONSE', ret)
+          if (ret == null) {
+            this.loadingController.dismiss().then(res=>{
+              this.loadingMsg = '';
+              console.log('Spinner Close', res);
+            }); 
+            this.show_alert = true
+ 
+          } else {
+            this.quiz = ret;
+            console.log(this.quiz);
+            this.question = this.quiz.questions[0];
+            this.total_question = this.quiz.total_questions;
+            this.time = this.quiz.time;
+            this.config = {leftTime: this.time, format: 'mm:ss'};
+    
+            this.loadingController.dismiss().then(res=>{
+              this.loadingMsg = '';
+              console.log('Spinner Close', res);
+            });
+          }
+
+        //console.log('QUIZ RESPOSE', Boolean(ret))
+      }
+    
+    );*/
   }
 
   saveAnswer(question,answer){
@@ -167,7 +223,7 @@ export class ViewQuizComponent implements OnInit {
  update(id: any, completeLevel: string, marks: number, currentLevel: number){
 
    //var completeLevel = 'L'+completeLevel;
-   this.userService.updateUser(id, completeLevel, marks, currentLevel);
+   this.userService.updateUser(id, completeLevel, marks, currentLevel, this.userStatus);
   }
 
   reset_timer() {

@@ -36,3 +36,20 @@ ion-badge {
   color: black;
   font-weight: bold;
 }
+
+.alert_div {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert {
+  --background: #ffffff;
+  --color: rgb(0, 0, 0);
+}
+
+.alert ion-card-subtitle {
+  --color: rgb(0, 0, 0);
+  font-weight: bold;
+}

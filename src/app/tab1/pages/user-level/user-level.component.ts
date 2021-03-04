@@ -35,6 +35,12 @@ export class UserLevelComponent implements OnInit {
 
   }
 
+  ngOnDestroy(){
+    this.loadingController.dismiss().then(res =>{
+      console.log(res);
+    });
+  }
+
   /*getAllUserData(){
 
     this.userService.getUserList().snapshotChanges().pipe(

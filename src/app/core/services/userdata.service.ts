@@ -45,26 +45,45 @@ export class UserdataService {
     data = {};
   }
 
-  updateUser(key: any, completelevel: string, marks: number, currentLevel: number): any {
+  updateUser(key: any, completelevel: string, marks: number, currentLevel: number, userState: string): any {
     
     var updateLevel: string = 'L'+completelevel;
+    console.log(userState);
 
-    if(Number(completelevel) < currentLevel){
+    if (userState == "pass") {
 
-      console.log('completelevel less than current level')
+      if(Number(completelevel) < currentLevel){
+
+        console.log('completelevel less than current level')
+        this.updateMarks(key, updateLevel, marks).then(res=>{
+          console.log(res);
+         });
+      } 
+      
+      else {
+  
+        console.log('completelevel Greater than current level')
+        var data = {};
+        //data['current_level'] = nextLevel;
+        data['current_level'] = Number(completelevel)+1;
+        console.log(data)
+        this.updateMarks(key, updateLevel, marks).then(res=>{
+          console.log(res);
+         });
+        this.db.object(this.db_path+'/'+key).update(data);
+      }
+      
+    } 
+    else {
+
+      console.log('****User Fail******')
       this.updateMarks(key, updateLevel, marks).then(res=>{
         console.log(res);
        });
-    } else {
-      var data = {};
-      //data['current_level'] = nextLevel;
-      data['current_level'] = Number(completelevel)+1;
-      console.log(data)
-      this.updateMarks(key, updateLevel, marks).then(res=>{
-        console.log(res);
-       });
-      this.db.object(this.db_path+'/'+key).update(data);
+      
     }
+
+
 
   }
 

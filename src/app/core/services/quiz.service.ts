@@ -14,18 +14,30 @@ export class QuizService {
   private db_path = '/questions';
   quiz_list: AngularFireList<Quiz>= null;
   quiz_obj: Observable<any>;
+  quizRef: AngularFireObject<any>;
 
-  constructor(protected httpClient: HttpClient, private file: File, private db: AngularFireDatabase) {  
+  constructor(protected httpClient: HttpClient, private db: AngularFireDatabase) {  
     this.quiz_list = this.db.list(this.db_path);
     //this.quiz_obj = this.db.object(this.db_path);
   }
 
-  getQuiz(qid:any): Observable<Quiz> {
-    //return this.httpClient.get<Quiz>(`${this.URL}/quiz${qid}.json`);
+  quiz_filter(val: number): Promise<any>{
+    this.quizRef = this.db.object(this.db_path);
+    var query = this.quizRef.query;
+
+    var obj: Promise<any>;
+    obj = query.orderByChild("quiz_level").equalTo(val).once("value", (data)=>{
+    });
+
+    return obj;
+  }
+
+  /*getQuiz(qid: any): Observable<any>  { 
+
     this.quiz_obj = this.db.object<any>(this.db_path+'/'+'quiz'+qid).valueChanges();
     return this.quiz_obj;
 
-  }
+  }*/
 
   /*saveQuizData(quiz: any){
 
