@@ -37,6 +37,22 @@
                         </div>
                     </div>
 
+                    <div fxLayout="row">
+                        <div fxFlex="30%" fxLayoutAlign="start center">
+                            <h3>Quiz Level</h3>
+                        </div>
+                        <div fxFlex="70%" style="padding-right: 2em;">
+                            <mat-form-field appearance="outline" style="width: 100%; font-size: x-small;">
+                                <mat-label>Select Quiz Level</mat-label>
+                                <mat-select formControlName="quiz_level">
+                                  <mat-option *ngFor="let level of levels" [value]="level">
+                                    Level {{level}}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div fxFlex="50%" style="margin-left: 5%;">
@@ -175,6 +191,7 @@
                 <button mat-raised-button type="submit" style="width: 20%; color: white; background-color: rgb(18, 1, 56); left: 50%;" (click)="submit()">Submit</button>
             </div>
         </form>
+
 
         <!--<br>
         <br>

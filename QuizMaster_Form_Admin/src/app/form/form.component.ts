@@ -19,6 +19,8 @@ export class FormComponent implements OnInit {
   form: FormGroup;
   totalQuestions: Number;
 
+  levels = [1,2,3,4,5,6,7,8,9,10];
+
   constructor(private firebase: FirebaseService, private formbuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class FormComponent implements OnInit {
     console.log(this.form.value);
 
   }
+
 
   SaveQuiz() {
     this.firebase.CreateQuiz(this.quiz, this.form.get('name').value).then((res)=>{
@@ -68,6 +71,7 @@ export class FormComponent implements OnInit {
       time: ['', Validators.required],
       pass_mark: ['', Validators.required],
       total_questions: ['', Validators.required],
+      quiz_level: ['', Validators.required],
       questions: this.formbuilder.array([]),
     });
   }
@@ -130,5 +134,7 @@ export class FormComponent implements OnInit {
     }
 
   }
+
+
 
 }

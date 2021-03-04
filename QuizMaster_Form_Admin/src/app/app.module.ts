@@ -11,6 +11,7 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 
 import {AngularFireModule} from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -36,7 +37,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSelectModule
 
   ],
   providers: [],

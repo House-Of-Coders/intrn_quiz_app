@@ -20,34 +20,16 @@ export class FirebaseService {
     return this.db.object(this.db_path).update(quiz);
     }
 
+
     GetQuizList() {
     this.quizListRef = this.db.list(this.db_path);
     return this.quizListRef;
     } 
     
-    /* // Fetch Single Student Object
-    GetStudent(id: string) {
-    this.quizRef = this.db.object('students-list/' + id);
-    return this.quizRef;
-    }
-
-    // Fetch Students List
-
-
-    // Update Student Object
-    UpdateStudent(student: Student) {
-    this.studentRef.update({
-        firstName: student.firstName,
-        lastName: student.lastName,
-        email: student.email,
-        mobileNumber: student.mobileNumber
-    })
-    }  
-
-    // Delete Student Object
-    DeleteStudent(id: string) { 
-    this.studentRef = this.db.object('students-list/'+id);
-    this.studentRef.remove();
+    /* Delete Object
+    DeleteQuiz(id: string) { 
+    this.quizRef = this.db.object(this.db_path+ '/' + id);
+    this.quizRef.remove();
     }*/
 
 }
