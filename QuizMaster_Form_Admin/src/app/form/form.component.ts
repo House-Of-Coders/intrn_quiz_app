@@ -1,7 +1,10 @@
+import { AuthService } from './../service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Quiz } from './../models/quiz.model';
+import { AppComponent } from '../app.component';
+import firebase from 'firebase';
 
 @Component({
   selector: 'app-form',
@@ -21,11 +24,14 @@ export class FormComponent implements OnInit {
 
   levels = [1,2,3,4,5,6,7,8,9,10];
 
-  constructor(private firebase: FirebaseService, private formbuilder: FormBuilder) { }
+  constructor(private firebase: FirebaseService, private formbuilder: FormBuilder,  private appcomponent: AppComponent, private auth: AuthService) { 
+    console.log("FormComponent constructor CALL");
+  }
 
   ngOnInit(): void {
     this.QuizForm();
     console.log(this.form.value);
+    this.appcomponent.isLogin = true;
 
   }
 
